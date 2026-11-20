@@ -1,0 +1,321 @@
+---
+title: "Project 2"
+author: "Emma Kuok"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+# Generating the necessary libraries for this project
+library(readr)
+library(dplyr)
+library(lubridate)
+library(tidyverse)
+library(purrr)
+library(gt)
+library(flextable)
+library(lintr)
+
+# Define a function to read, clean,
+# and summarize one year of air quality data
+
+#Ozone is assumed to be in ppm unless ozone_units = "ppb" is specified.
+clean_air_quality <- function(file_path, ozone_units = c("ppm", "ppb")) {
+
+  ozone_units <- match.arg(ozone_units)
+  pollutants <- c("CO", "PM25", "O3")
+
+  # Function that read the CSV file,
+  # renaming the required columns
+  air_data <- readr::read_csv(file_path, show_col_types = FALSE) |>
+    # Renaming pollutant columns and formatting data
+    dplyr::rename(
+      dplyr::all_of(c(
+        date = "Date",
+        CO = "Daily Max 8-hour CO Concentration",
+        PM25 = "Daily Mean PM2.5 Concentration",
+        O3 = "Daily Max 8-hour Ozone Concentration"
+      ))
+    ) |>
+    dplyr::mutate(
+      date = lubridate::mdy(date)
+    )
+
+  # Converting O3 from ppm to ppb when requested
+  if (ozone_units == "ppb") {
+    air_data <- air_data |>
+      dplyr::mutate(O3 = .data$O3 * 1000)
+  }
+
+  # Grouping records by date and calculate the daily
+  #mean for each pollutant along with detecting duplicates
+  air_data <- air_data |>
+    dplyr::group_by(.data$date) |>
+    dplyr::summarise(
+      dplyr::across(
+        dplyr::all_of(pollutants),
+        \(x) mean(x, na.rm = TRUE)
+      ),
+      .groups = "drop"
+    ) |>
+    dplyr::distinct()
+
+  # Replacing negative pollutant values with zero
+  pollutants <- c("CO", "PM25", "O3")
+
+  for (pollutant in pollutants) {
+    air_data[[pollutant]][
+      !is.na(air_data[[pollutant]]) &
+        air_data[[pollutant]] < 0
+    ] <- 0
+  }
+
+  air_data
+}
+
+# Reading and cleaning the data for each year
+aq2018 <- clean_air_quality("AQ_2018.csv")
+aq2019 <- clean_air_quality("AQ_2019.csv")
+aq2020 <- clean_air_quality("AQ_2020.csv")
+
+## Combining the yearly datasets into one data frame
+dataset_final <- dplyr:: bind_rows(
+  aq2018,
+  aq2019,
+  aq2020
+)
+
+#Preview the combined data and review summary statistics
+head(dataset_final)
+summary(dataset_final)
+```
+## Function:
+
+### Does the order change your results?
+- **ANSWER:** Yes, the order changes my results. It is important to clean the data such as excluding incorrect results, duplicated results, incorrect units to their proper units before undergoing any potential calculations such as the proper conversions, re-evaluating negative values, etc. and finally combining the datasets into the respective categories to establish the proper data. 
+
+## Table:
+```{r, include = FALSE}
+# Function: Calculate minimum and maximum pollutant concentrations for one year.
+# Arguments:
+#   data: Air quality data frame containing CO, PM25, and O3 columns.
+#   year: Year represented by the data.
+# Returns:
+#   A one-row data frame containing the year and minimum and maximum
+#   concentrations for each pollutant.
+
+pollutant_summary <- function(data, year) {
+  #calculating our minimum and maximum for the following pollutants:
+  data |>
+    summarise(
+      co_min = min(.data$CO, na.rm = TRUE),
+      co_max = max(.data$CO, na.rm = TRUE),
+      pm25_min = min(.data$PM25, na.rm = TRUE),
+      pm25_max = max(.data$PM25, na.rm = TRUE),
+      o3_min = min(.data$O3, na.rm = TRUE),
+      o3_max = max(.data$O3, na.rm = TRUE)
+    )
+}
+```
+
+```{r, echo=FALSE, results='asis'}
+# Calculate the summaries for each year and combine them into one data frame.
+all_summaries <- dplyr::bind_rows(
+  pollutant_summary(aq2018, 2018) |> dplyr::mutate(Year = 2018),
+  pollutant_summary(aq2019, 2019) |> dplyr::mutate(Year = 2019),
+  pollutant_summary(aq2020, 2020) |> dplyr::mutate(Year = 2020)
+) |>
+  dplyr::select(Year, dplyr::everything())
+
+all_summaries <- all_summaries |>
+  dplyr::mutate(Year = as.character(Year))
+
+# Creating a formatted table with readable column
+#headings with pollutant results rounded to
+#3 decimal places
+ft <- flextable::flextable(all_summaries) |>
+  flextable::set_header_labels(
+    Year = "Year",
+    co_min = "CO Minimum",
+    co_max = "CO Maximum",
+    pm25_min = "PM2.5 Minimum",
+    pm25_max = "PM2.5 Maximum",
+    o3_min = "O₃ Minimum",
+    o3_max = "O₃ Maximum"
+  ) |>
+  flextable::colformat_num(j = 2:7, digits = 3) |>
+  flextable::width(j = 1, width = 0.8) |>
+  flextable::autofit()
+# Formatting our table with centered header text
+#and caption
+ft <- ft |>
+  flextable::set_caption(
+    caption = "Minimum and Maximum Concentrations 
+    of CO, O₃, and PM2.5 for Years: 2018, 2019, 2020"
+  ) |>
+  flextable::align(align = "center", part = "header")
+# Adding horizontal between rows and vertical lines between columns
+ft <- ft |>
+  flextable::hline(
+    border = officer::fp_border(color = "gray60", width = 0.5),
+    part = "body"
+  ) |>
+  flextable::vline(
+    border = officer::fp_border(color = "gray60", width = 0.5),
+    part = "all"
+  )
+
+# Output: table
+ft
+```
+
+## Plots
+### Plot 1: CO and O3 by month.
+```{r, echo = FALSE}
+# Summarize monthly means, standard deviations, sample sizes, and
+# approximate 95% confidence interval margins for CO and O3.
+plot1 <- function(data) {
+  monthly_avg <- data |>
+    dplyr::group_by(.data$months) |>
+    dplyr::summarise(
+      mean_CO = mean(.data$CO, na.rm = TRUE),
+      sd_CO = sd(.data$CO, na.rm = TRUE),
+      n_CO = sum(!is.na(.data$CO)),
+      CI_CO = 1.96 * sd(.data$CO, na.rm = TRUE) / sqrt(sum(!is.na(.data$n_CO))),
+
+      mean_O3 = mean(.data$O3, na.rm = TRUE),
+      sd_O3 = sd(.data$O3, na.rm = TRUE),
+      n_O3 = sum(!is.na(.data$O3)),
+      CI_O3 = 1.96 * sd(.data$O3, na.rm = TRUE) / sqrt(sum(!is.na(.data$n_O3))),
+
+      .groups = "drop"
+    )
+
+  monthly_avg
+}
+
+# Add month and year values derived from each observation's date.
+dataset_final <- dataset_final |>
+  mutate(
+    date = as.Date(date),
+    months = lubridate::month(date)
+  )
+
+# Calculate the monthly CO and O3 summaries.
+monthly_avg <- plot1(dataset_final)
+
+# Reshape the summaries into a format suitable for plotting both pollutants.
+monthly_long <- monthly_avg |>
+  select(months, mean_CO, CI_CO, mean_O3, CI_O3) |>
+  pivot_longer(
+    cols = -months,
+    names_to = c(".value", "pollutant"),
+    names_pattern = "(mean|CI)_(CO|O3)"
+  )
+```
+
+```{r, echo = FALSE}
+# Plot monthly means and their approximate 95% confidence intervals.
+# Separate facets give CO and O3 their own y-axis scales.
+ggplot(monthly_long,
+       aes(x = months, y = mean, color = pollutant)) +
+  geom_point() +
+  geom_errorbar(
+    aes(ymin = mean - CI, ymax = mean + CI),
+    width = 0.2
+  ) +
+  facet_wrap(~pollutant, ncol = 1, scales = "free_y") +
+  scale_x_continuous(
+    breaks = 1:12,
+    labels = month.abb
+  ) +
+  labs(
+    title = "Monthly Average of CO and O3 Concentrations",
+    x = "Month",
+    y = "Average Concentration",
+    color = "Pollutant"
+  ) +
+  theme_minimal()
+
+```
+
+**NOTE**:
+
+- CO is shown above O₃ because its average concentration is higher. The separate ranges make the monthly point estimates and their respective 95% confidence intervals easier to read.
+
+### Plot 2: PM2.5 by month and year. 
+```{r, echo = FALSE}
+
+#Extracting month from the dataset
+dataset_final <- dataset_final |>
+  mutate(
+    date = as.Date(date),
+    months = lubridate::month(date),
+    year = lubridate::year(date)
+  )
+
+# Calculate the average PM2.5 concentration for each year and month.
+plot2 <- function(data) {
+
+  monthly_pm25 <- data |>
+    group_by(year, months) |>
+    summarise(
+      mean_PM25 = mean(.data$PM25, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  monthly_pm25
+}
+
+# Run function to create the montly PM2.5 summary data
+monthlypm25 <- plot2(dataset_final)
+```
+
+```{r, echo = FALSE}
+# Plot monthly PM2.5 averages, using a separate line for each year.
+ggplot(monthlypm25,
+       aes(x = months, y = mean_PM25,
+           color = factor(year), group = year)) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 2) +
+  scale_x_continuous(
+    breaks = 1:12,
+    labels = month.abb
+  ) +
+  labs(
+    title = "Monthly Average PM2.5 Concentrations by Year",
+    x = "Month",
+    y = "Average PM2.5 Concentration",
+    color = "Year"
+  ) +
+  theme_minimal()
+
+```
+
+```{r, include = FALSE}
+# Checking for code structure and format for readability
+lintr::lint(here::here("Emma_Kuok_ Project2.Rmd"))
+```
+
+**NOTE:**
+
+- Line plot is used above because it shows how PM2.5 concentrations change month to month and makes seasonal patterns across years easy to compare.
+
+## Interpretation:
+In 2-3 sentences, describe the patterns you see in your tables and plots. For example: Do any pollutants show seasonal patterns? Do any years stand out? Keep in mind which months have less data.
+
+- **ANSWER:** The plots suggest that CO and O₃ often move in opposite directions, with peaks in one tending to coincide with lower concentrations in the other. PM2.5 fluctuates across months and years rather than showing a consistent trend; interpret apparent seasonal patterns cautiously because some months have fewer observations (after April of 2020 due to COVID-19). 
+
+## AI Use Statement: 
+This project involved with the usage of AI (ChatGPT) to re-modify the format of the graphs and tables, along with assisting with code debugging. 
+
+## GitHub Link:
+
+https://github.com/emmak6240/BIOSTAT721-Project-2.git
+
+
+
