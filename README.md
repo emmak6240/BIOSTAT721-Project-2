@@ -12,7 +12,7 @@ The raw air quality datasets used in this project were collected from RDU Airpor
 All project files are located in the root directory of the repository:
 - `AQ_2018.csv`, `AQ_2019.csv`, `AQ_2020.csv`: data files analyzed for this project
 - `Emma_Kuok_ Project2.Rmd`: R Markdown script containing documentation, data-cleaning functions, data-analysis management, and code with comments for all summary tables and plots.
-- `Emma_Kuok_ Project2.docx`: Final knitted Word report containing the formatted tables, visualizations, and interpretations of this project, executed by Emma_Kuok_ Project2.Rmd
+- `Emma_Kuok_ Project2.docx`: Final knitted Word report containing the formatted tables, visualizations, and interpretations of this project, executed by `Emma_Kuok_ Project2.Rmd`
   
 ## How to reproduce: The steps (and R packages) needed to run your code and knit/render the report
 ## Author and date: 
