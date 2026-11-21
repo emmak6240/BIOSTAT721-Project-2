@@ -8,7 +8,7 @@ The raw air quality datasets used in this project were collected from RDU Airpor
 - `AQ_2019.csv`: Air quality measurements from Jan. 2019 ~ Dec. 2019
 - `AQ_2020.csv`: Air quality measurements from Jan. 2020 ~ Apr. 2020
 
-## File structure: 
+## File Structure: 
 All project files are located in the root directory of the repository:
 - `AQ_2018.csv`, `AQ_2019.csv`, `AQ_2020.csv`: data files analyzed for this project
 - `Emma_Kuok_ Project2.Rmd`: R Markdown script containing documentation, data-cleaning functions, data-analysis management, and code with comments for all summary tables and plots.
