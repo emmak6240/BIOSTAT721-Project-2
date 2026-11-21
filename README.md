@@ -23,7 +23,7 @@ All project files are located in the root directory of the repository:
    - Double-click `BIOSTAT721-Project-2.Rproj` to open the project in RStudio (this ensures your working directory is set automatically).
    - Run the following command in the console if you have not installed these packages yet:
    ```r
-    - install.packages(c(dplyr; flextable; gt; lintr; lubridate; purrr; readr; tidyverse))
+      install.packages(c(dplyr; flextable; gt; lintr; lubridate; purrr; readr; tidyverse))
    ```
 5) **Knitting the report**
    - Open `Emma_Kuok_ Project2.Rmd` in RStudio
