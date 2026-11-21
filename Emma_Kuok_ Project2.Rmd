@@ -11,14 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, include = FALSE}
 # Generating the necessary libraries for this project
-library(readr)
 library(dplyr)
-library(lubridate)
-library(tidyverse)
-library(purrr)
-library(gt)
 library(flextable)
+library(gt)
 library(lintr)
+library(lubridate)
+library(purrr)
+library(readr)
+library(tidyverse)
 
 # Define a function to read, clean,
 # and summarize one year of air quality data
@@ -154,8 +154,8 @@ ft <- flextable::flextable(all_summaries) |>
 #and caption
 ft <- ft |>
   flextable::set_caption(
-    caption = "Minimum and Maximum Concentrations 
-    of CO, O₃, and PM2.5 for Years: 2018, 2019, 2020"
+    caption = 
+      "Minimum and Maximum Concentrations of CO, O₃, and PM2.5 for Years: 2018, 2019, 2020"
   ) |>
   flextable::align(align = "center", part = "header")
 # Adding horizontal between rows and vertical lines between columns
@@ -271,7 +271,7 @@ plot2 <- function(data) {
   monthly_pm25
 }
 
-# Run function to create the montly PM2.5 summary data
+# Run function to create the monthly PM2.5 summary data
 monthlypm25 <- plot2(dataset_final)
 ```
 
