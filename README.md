@@ -29,5 +29,5 @@ All project files are located in the root directory of the repository:
    - Open `Emma_Kuok_ Project2.Rmd` in RStudio
    - Click the *Knit* drop-down menu and select **Knit to Word** to run the code and generate the final Word document (`Emma_Kuok_ Project2.docx`)  
 
-## Author and date: 
+## Author and Date: 
 Emma Kuok (Nov. 22, 2026)
