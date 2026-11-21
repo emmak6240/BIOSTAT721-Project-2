@@ -17,7 +17,7 @@ All project files are located in the root directory of the repository:
 ## Reproducing the Report 
 1) **Download or Clone** the following files from the repository into the same folder:
    - **Project File:** `BIOSTAT721-Project-2.Rproj`
-   - ***Data Files:*** `AQ_2018.csv`, `AQ_2019.csv',  `AQ_2020.csv` 
+   - ***Data Files:*** `AQ_2018.csv`, `AQ_2019.csv`, `AQ_2020.csv` 
    - ***R Markdown Script:*** `Emma_Kuok_ Project2.Rmd`
 3) **Open Project and Install Required R packages:** in RStudio (if not already installed):
    - Double-click `BIOSTAT721-Project-2.Rproj` to open the project in RStudio (this ensures your working directory is set automatically).
