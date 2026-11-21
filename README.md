@@ -14,7 +14,7 @@ All project files are located in the root directory of the repository:
 - `Emma_Kuok_ Project2.Rmd`: R Markdown script containing documentation, data-cleaning functions, data-analysis management, and code with comments for all summary tables and plots.
 - `Emma_Kuok_ Project2.docx`: Final knitted Word report containing the formatted tables, visualizations, and interpretations of this project, executed by `Emma_Kuok_ Project2.Rmd`
   
-## Reproducing the Report 
+## Reproducing the Report:
 1) **Download or Clone** the following files from the repository into the same folder:
    - ***Project File:*** `BIOSTAT721-Project-2.Rproj`
    - ***Data Files:*** `AQ_2018.csv`, `AQ_2019.csv`, `AQ_2020.csv` 
@@ -25,7 +25,7 @@ All project files are located in the root directory of the repository:
    ```r
       install.packages(c(dplyr; flextable; gt; lintr; lubridate; purrr; readr; tidyverse))
    ```
-3) **Knitting the report**
+3) **Knitting the Report**
    - Open `Emma_Kuok_ Project2.Rmd` in RStudio
    - Click the *Knit* drop-down menu and select **Knit to Word** to run the code and generate the final Word document (`Emma_Kuok_ Project2.docx`)  
 
