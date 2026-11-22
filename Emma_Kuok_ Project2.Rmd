@@ -8,8 +8,11 @@ output: word_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+## R Version and R-Packages Versions:
 
-```{r, include = FALSE}
+- R version 4.6.1 (2026-06-24 ucrt)
+ 
+```{r, include=FALSE}
 # Generating the necessary libraries for this project
 library(dplyr)
 library(flextable)
@@ -20,6 +23,44 @@ library(purrr)
 library(readr)
 library(tidyverse)
 
+# Identify the versions of R
+R.version.string
+
+# Identify the versions of the R-Packages for
+# this project
+packages <- c("dplyr", "flextable", "gt", "lintr",
+              "lubridate", "purrr", "readr", "tidyverse")
+package_versions <- data.frame(
+  Package = packages,
+  Version = sapply(packages, \(x) as.character(packageVersion(x)))
+)
+```
+
+```{r, echo = FALSE}
+# Formatting our tables
+package_version_table <- package_versions |>
+  flextable::flextable() |>
+  flextable::set_caption(
+    caption = paste(
+      "R-Package Versions"
+    )
+  ) |>
+  flextable::hline(
+    border = officer::fp_border(color = "gray60", width = 0.5),
+    part = "body"
+  ) |>
+  flextable::vline(
+    border = officer::fp_border(color = "gray60", width = 0.5),
+    part = "all"
+  ) |>
+  flextable::autofit()
+
+# Display table
+package_version_table
+
+```
+
+```{r, include = FALSE}
 # Define a function to read, clean,
 # and summarize one year of air quality data
 
@@ -132,7 +173,9 @@ all_summaries <- dplyr::bind_rows(
   dplyr::select(Year, dplyr::everything())
 
 all_summaries <- all_summaries |>
-  dplyr::mutate(Year = as.character(Year))
+  dplyr::mutate(
+    Year = as.character(Year)
+  )
 
 # Creating a formatted table with readable column
 #headings with pollutant results rounded to
@@ -152,10 +195,12 @@ ft <- flextable::flextable(all_summaries) |>
   flextable::autofit()
 # Formatting our table with centered header text
 #and caption
-ft <- ft |>
+t <- ft |>
   flextable::set_caption(
-    caption = 
-      "Minimum and Maximum Concentrations of CO, O₃, and PM2.5 for Years: 2018, 2019, 2020"
+    caption = paste(
+      "Minimum and Maximum Concentrations of CO, O₃, and PM2.5",
+      "for Years: 2018, 2019, 2020"
+    )
   ) |>
   flextable::align(align = "center", part = "header")
 # Adding horizontal between rows and vertical lines between columns
@@ -311,7 +356,7 @@ In 2-3 sentences, describe the patterns you see in your tables and plots. For ex
 - **ANSWER:** The plots suggest that CO and O₃ often move in opposite directions, with peaks in one tending to coincide with lower concentrations in the other. PM2.5 fluctuates across months and years rather than showing a consistent trend; interpret apparent seasonal patterns cautiously because some months have fewer observations (after April of 2020 due to COVID-19). 
 
 ## AI Use Statement: 
-This project involved with the usage of AI (ChatGPT) to re-modify the format of the graphs and tables, along with assisting with code debugging. 
+This project consisted with the usage of AI (ChatGPT) to re-modify the format of the graphs and tables, assisting with code debugging, and reference to template of formatting the code to generate the results.
 
 ## GitHub Link:
 
