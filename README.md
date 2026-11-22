@@ -16,17 +16,17 @@ All project files are located in the root directory of the repository:
 - `Emma_Kuok_ Project2.docx`: Final knitted Word report containing the formatted tables, visualizations, and interpretations of this project, executed by `Emma_Kuok_ Project2.Rmd`
 
 ## R Version and R-Package Versions
-- **R Version:**
-   -  4.6.1 (2026-06-24 ucrt)
+***These are the versions utilized for this project (11/22/2026):***
+- **R Version:** 4.6.1 (2026-06-24 ucrt)
 - **R-Package Versions:**
-  - dplyr: Version 1.2.1
-  - flextable: Version 0.10.5
-  - gt: Version 1.3.0
-  - lintr: Version 3.4.0
-  - lubridate: Version 1.9.5
-  - purrr: Version 1.2.2
-  - readr: Version 2.2.0
-  - tidyverse: Version 2.0.0
+  - `dplyr`: 1.2.1
+  - `flextable`: 0.10.5
+  - `gt`: 1.3.0
+  - `lintr`: 3.4.0
+  - `lubridate`: 1.9.5
+  - `purrr`: 1.2.2
+  - `readr`: 2.2.0
+  - `tidyverse`: 2.0.0
 
 ## Reproducing the Report:
 1) **Download or Clone** the following files from the repository into the same folder:
@@ -37,7 +37,7 @@ All project files are located in the root directory of the repository:
    - Double-click `BIOSTAT721-Project-2.Rproj` to open the project in RStudio (this ensures your working directory is set automatically).
    - Run the following command in the console if you have not installed these packages yet:
    ```r
-      install.packages(c(dplyr; flextable; gt; lintr; lubridate; purrr; readr; tidyverse))
+      install.packages(c("dplyr", "flextable", "gt", "lintr", "lubridate", "purrr", "readr", "tidyverse"))
    ```
 3) **Knitting the Report**
    - Open `Emma_Kuok_ Project2.Rmd` in RStudio
