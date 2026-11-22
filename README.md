@@ -15,10 +15,19 @@ All project files are located in the root directory of the repository:
 - `Emma_Kuok_ Project2.Rmd`: R Markdown script containing documentation, data-cleaning functions, data-analysis management, and code with comments for all summary tables and plots.
 - `Emma_Kuok_ Project2.docx`: Final knitted Word report containing the formatted tables, visualizations, and interpretations of this project, executed by `Emma_Kuok_ Project2.Rmd`
 
-## R Versions and R-Package Versions
-```r
-r.version.string
-```
+## R Version and R-Package Versions
+- **R Version:**
+   -  4.6.1 (2026-06-24 ucrt)
+- **R-Package Versions:**
+  - dplyr: Version 1.2.1
+  - flextable: Version 0.10.5
+  - gt: Version 1.3.0
+  - lintr: Version 3.4.0
+  - lubridate: Version 1.9.5
+  - purrr: Version 1.2.2
+  - readr: Version 2.2.0
+  - tidyverse: Version 2.0.0
+
 ## Reproducing the Report:
 1) **Download or Clone** the following files from the repository into the same folder:
    - ***Project File:*** `BIOSTAT721-Project-2.Rproj`
