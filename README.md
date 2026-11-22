@@ -39,6 +39,7 @@ All project files are located in the root directory of the repository:
    ```r
       install.packages(c("dplyr", "flextable", "gt", "lintr", "lubridate", "purrr", "readr", "tidyverse"))
    ```
+   - ***NOTE:*** If you already have some of these packages installed (e.g., dplyr), you can remove them from the command above and only install the ones you are missing.
 3) **Knitting the Report**
    - Open `Emma_Kuok_ Project2.Rmd` in RStudio
    - Click the *Knit* drop-down menu and select **Knit to Word** to run the code and generate the final Word document (`Emma_Kuok_ Project2.docx`)  
