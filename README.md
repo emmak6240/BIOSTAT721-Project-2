@@ -11,10 +11,14 @@ The raw air quality datasets used in this project were collected from RDU Airpor
 ## File Structure: 
 All project files are located in the root directory of the repository:
 - `AQ_2018.csv`, `AQ_2019.csv`, `AQ_2020.csv`: data files analyzed for this project
-- - `BIOSTAT721-Project-2.Rproj`: RStudio Project file that sets the working directory and standardizes workspace settings for reproducibility.
+- `BIOSTAT721-Project-2.Rproj`: RStudio Project file that sets the working directory and standardizes workspace settings for reproducibility.
 - `Emma_Kuok_ Project2.Rmd`: R Markdown script containing documentation, data-cleaning functions, data-analysis management, and code with comments for all summary tables and plots.
 - `Emma_Kuok_ Project2.docx`: Final knitted Word report containing the formatted tables, visualizations, and interpretations of this project, executed by `Emma_Kuok_ Project2.Rmd`
-  
+
+## R Versions and R-Package Versions
+```r
+r.version.string
+```
 ## Reproducing the Report:
 1) **Download or Clone** the following files from the repository into the same folder:
    - ***Project File:*** `BIOSTAT721-Project-2.Rproj`
@@ -31,4 +35,4 @@ All project files are located in the root directory of the repository:
    - Click the *Knit* drop-down menu and select **Knit to Word** to run the code and generate the final Word document (`Emma_Kuok_ Project2.docx`)  
 
 ## Author and Date: 
-Emma Kuok (Nov. 21, 2026)
+Emma Kuok (Nov. 22, 2026)
